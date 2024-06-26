@@ -1,9 +1,10 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from "./models/swagger-docs";
+import {db,displayDbConnectionParams,testDbConnection} from "./db";
 
-dotenv.config();
+const testDbConnectionOnStartup = true;
+
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
@@ -27,3 +28,10 @@ app.get("/", (req: Request, res: Response) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+//For debugging db connection
+if (testDbConnectionOnStartup) {
+    displayDbConnectionParams();
+    testDbConnection();
+}
+
