@@ -1,0 +1,5 @@
+.vscode
+Backend/.env
+Backend/dist
+Backend/node_modules
+LeagueWebsite.code-workspace
