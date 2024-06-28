@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import swaggerUi from 'swagger-ui-express';
-import {swaggerDocument} from "./models/swagger-docs";
+import {swaggerDocument} from "./models/swagger_docs";
 import {db,displayDbConnectionParams,testDbConnection} from "./db";
 
 const testDbConnectionOnStartup = true;
