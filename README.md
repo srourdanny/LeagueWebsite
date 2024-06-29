@@ -1,10 +1,10 @@
-# LeagueWebsite
+# League Stats with Friends
 
 ## Setup the Backend
 1. Navigate to the backend: `cd Backend`
 2. Install dependencies from package.json: ```npm install```
 
-## Setup your environment
+### Setup your environment
 1. Create a file named `.env` in the `Backend` folder
 2. Fill out the following variables as instructed:
     - Note that riot development api keys must be regenerated every 24 hours.

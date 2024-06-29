@@ -1,7 +1,7 @@
 {
-  "name": "league-friend-roaster-backend",
+  "name": "league-stats-with-friends-backend",
   "version": "0.0.0",
-  "description": "A backend for a LeagueFriendRoaster, a fun side project",
+  "description": "A backend for a LeagueStatsWithFriends, a fun side project",
   "main": "app.js",
   "scripts": {
     "build": "npx tsc",

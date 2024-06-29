@@ -24,7 +24,7 @@ app.use(express.json({
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req: Request, res: Response) => {
-    res.send('<h1>League Friends Roaster</h1><p>Welcome</p><p><a href="/api-docs">API documentation</a></p>')
+    res.send('<h1>League Stats With Friends</h1><p>Welcome</p><p><a href="/api-docs">API documentation</a></p>')
 });
 
 //Add more routes here
