@@ -186,6 +186,7 @@ CREATE TABLE Participants (
 
 --challengesdto
 CREATE TABLE Challenges (
+    Id bigint PRIMARY KEY generated always as identity,
     AssistStreakCount int,
     BaronBuffGoldAdvantageOverThreshold int,
     ControlWardTimeCoverageInRiverOrEnemyHalf float,
@@ -326,6 +327,7 @@ CREATE TABLE Challenges (
 
 --missionsdto
 CREATE TABLE Missions (
+    Id bigint PRIMARY KEY generated always as identity,
     PlayerScore0 int,
     PlayerScore1 int,
     PlayerScore2 int,
