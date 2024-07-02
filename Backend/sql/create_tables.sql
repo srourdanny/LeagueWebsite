@@ -1,6 +1,6 @@
 --Account table
 DROP TABLE IF EXISTS league.RiotAccount;
-CREATE TABLE RiotAccount (
+CREATE TABLE league.RiotAccount (
     Id bigint PRIMARY KEY generated always as identity,
     Puuid VARCHAR(255),
     GameName VARCHAR(255),
@@ -8,7 +8,7 @@ CREATE TABLE RiotAccount (
 );
 
 --MetadataDto and InfoDtos
-CREATE TABLE Match (
+CREATE TABLE league.Match (
     Id bigint PRIMARY KEY generated always as identity,
     MatchId VARCHAR(255)
     DataVersion VARCHAR(255),
@@ -30,7 +30,7 @@ CREATE TABLE Match (
 
 --everyone who played in the match
 --might be able to link participants too
-CREATE TABLE RiotAccountToMatch (
+CREATE TABLE league.RiotAccountToMatch (
     Id bigint PRIMARY KEY generated always as identity,
     RiotAccountId bigint, --TODO foreign key
     MatchId bigint, --TODO foreign
