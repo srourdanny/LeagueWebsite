@@ -10,7 +10,7 @@ CREATE TABLE league.RiotAccount (
 --MetadataDto and InfoDtos
 CREATE TABLE league.Match (
     Id bigint PRIMARY KEY generated always as identity,
-    MatchId VARCHAR(255)
+    MatchId VARCHAR(255),
     DataVersion VARCHAR(255),
     EndOfGameResult VARCHAR(255),
     GameCreation bigint,
@@ -24,8 +24,9 @@ CREATE TABLE league.Match (
     MapId int,
     PlatformId VARCHAR(255),
     QueueId int,
-    --LINK table for teams
+    --LINK table for teams. DONE
     TournamentCode VARCHAR(255)
+    --do we need a participants link??
 );
 
 --everyone who played in the match
@@ -52,7 +53,7 @@ CREATE TABLE Participants (
     CommandPings int,
     ChampionTransform int,
     ConsumablesPurchased int
-    --LINK table for challenges
+    --LINK table for challenges. DONE
     DamageDealtToBuildings int,
     DamageDealtToObjectives int,
     DamageDealtToTurrets int,
@@ -96,7 +97,7 @@ CREATE TABLE Participants (
     MagicDamageDealt int,
     MagicDamageDealtToChampions int,
     MagicDamageTaken int,
-    --LINK table for missions
+    --LINK table for missions. DONE
     NeutralMinionsKilled int,
     NeedVisionPings int,
     NexusKills int,
@@ -322,7 +323,8 @@ CREATE TABLE Challenges (
     VisionScorePerMinute float,
     WardsGuarded int,
     WardTakedowns int,
-    WardTakedownsBefore20M int
+    WardTakedownsBefore20M int,
+    ParticipantsId bigint references participants(Id) 
 );
 
 --missionsdto
@@ -339,9 +341,50 @@ CREATE TABLE Missions (
     PlayerScore8 int,
     PlayerScore9 int,
     PlayerScore10 int,
-    PlayerScore11 int
+    PlayerScore11 int,
+    ParticipantsId bigint references participants(Id) 
 );
 
+CREATE TABLE Teams (
+    Id bigint PRIMARY KEY generated always as identity,
+    Teamid int,
+    Win boolean,
+    MatchId bigint references league.Match(Id), --this will point to match.id
+    -- need bans and objective lists.
+
+
+);
+
+CREATE TABLE Perks (
+    Id bigint PRIMARY KEY generated always as identity,
+    --link stat perks. DONE
+    --link styles
+    ParticipantId bigint references Participants(Id) -- points to participants
+);
+
+CREATE TABLE PerksStats (
+    Id bigint PRIMARY KEY generated always as identity,
+    Defense int,
+    Flex int,
+    Offense int
+    PerksId bigint references Perks(Id) -- points to Perks
+);
+
+CREATE TABLE PerksStyle (
+    Id bigint PRIMARY KEY generated always as identity,
+    DescriptionPerkStyle varchar(255),
+    --link selections to PerkStyleSelectionDto
+    Style int
+);
+
+CREATE TABLE PerkStyleSelection (
+    Id bigint PRIMARY KEY generated always as identity,
+    perk int,
+    var1 int,
+    var2 int,
+    var3 int,
+    PerksSelectionId bigint references PerksStyle(Id) -- points to perksstyle
+);
 
 --
 
