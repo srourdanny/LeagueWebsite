@@ -4,10 +4,10 @@ import {swaggerDocument} from "./models/swagger_docs";
 import {db,displayDbConnectionParams,testDbConnection} from "./db";
 
 //TODO: only here for testing. remove later
-import {testRiotApi} from './services/riotapi/account_service';
+import {testAccountService} from './services/riotapi/account_service';
 
 const testDbConnectionOnStartup = true;
-const testRiotApiOnStartup = true;
+const testAccountServiceOnStartup = true;
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -39,6 +39,6 @@ if (testDbConnectionOnStartup) {
     testDbConnection();
 }
 
-if (testRiotApiOnStartup) {
-    testRiotApi();
+if (testAccountServiceOnStartup) {
+    testAccountService(undefined, undefined);
 }
