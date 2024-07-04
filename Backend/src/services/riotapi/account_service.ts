@@ -1,16 +1,16 @@
 import AccountDto from "../../models/riot/account_dto";
 import RiotAccount from "../../models/riot_account";
-import riotapi from '../riotapi';
+import riotapiWrapper from '../riotapi';
 import {db} from '../../db';
 
 //TODO: thinking about encapsulating these functions into DB and riot api
 async function getAccountByRiotId(gameName: string, tagLine: string) : Promise<AccountDto> {
-    let response = await riotapi.get<AccountDto>(`/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
+    let response = await riotapiWrapper.queueRequest(riotapi => riotapi.get<AccountDto>(`/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`));
     return response.data;
 }
 
 async function getAccountByPuuid(puuid: string) : Promise<AccountDto> {
-    let response = await riotapi.get<AccountDto>(`/riot/account/v1/accounts/by-puuid/${puuid}`);
+    let response = await riotapiWrapper.queueRequest(riotapi => riotapi.get<AccountDto>(`/riot/account/v1/accounts/by-puuid/${puuid}`));
     return response.data;
 }
 

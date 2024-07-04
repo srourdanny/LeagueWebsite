@@ -11,4 +11,12 @@ const riotApiClient: AxiosInstance = axios.create({
      }
 });
 
-export default riotApiClient;
+async function queueRequest<T>(request : (riotapi: AxiosInstance) => Promise<T>): Promise<T> {
+   return await request(riotApiClient);
+}
+
+let riotApiWrapper = {
+   queueRequest: queueRequest
+};
+
+export default riotApiWrapper;
