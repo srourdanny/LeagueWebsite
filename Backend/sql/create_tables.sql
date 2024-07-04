@@ -29,17 +29,10 @@ CREATE TABLE league.Match (
     --do we need a participants link??
 );
 
---everyone who played in the match
---might be able to link participants too
-CREATE TABLE league.RiotAccountToMatch (
-    Id bigint PRIMARY KEY generated always as identity,
-    RiotAccountId bigint, --TODO foreign key
-    MatchId bigint, --TODO foreign
-    ParticipantId bigint --TODO foreign key
-);
+
 
 --participants dto
-CREATE TABLE Participants (
+CREATE TABLE league.Participants (
     Id bigint PRIMARY KEY generated always as identity,
     AllInPings int,
     AssistMePings int,
@@ -186,7 +179,7 @@ CREATE TABLE Participants (
 );
 
 --challengesdto
-CREATE TABLE Challenges (
+CREATE TABLE league.Challenges (
     Id bigint PRIMARY KEY generated always as identity,
     AssistStreakCount int,
     BaronBuffGoldAdvantageOverThreshold int,
@@ -328,7 +321,7 @@ CREATE TABLE Challenges (
 );
 
 --missionsdto
-CREATE TABLE Missions (
+CREATE TABLE league.Missions (
     Id bigint PRIMARY KEY generated always as identity,
     PlayerScore0 int,
     PlayerScore1 int,
@@ -345,7 +338,7 @@ CREATE TABLE Missions (
     ParticipantsId bigint references participants(Id) 
 );
 
-CREATE TABLE Teams (
+CREATE TABLE leauge.Teams (
     Id bigint PRIMARY KEY generated always as identity,
     Teamid int,
     Win boolean,
@@ -355,14 +348,14 @@ CREATE TABLE Teams (
 
 );
 
-CREATE TABLE Perks (
+CREATE TABLE leauge.Perks (
     Id bigint PRIMARY KEY generated always as identity,
     --link stat perks. DONE
     --link styles
     ParticipantId bigint references Participants(Id) -- points to participants
 );
 
-CREATE TABLE PerksStats (
+CREATE TABLE leauge.PerksStats (
     Id bigint PRIMARY KEY generated always as identity,
     Defense int,
     Flex int,
@@ -370,14 +363,14 @@ CREATE TABLE PerksStats (
     PerksId bigint references Perks(Id) -- points to Perks
 );
 
-CREATE TABLE PerksStyle (
+CREATE TABLE league.PerksStyle (
     Id bigint PRIMARY KEY generated always as identity,
     DescriptionPerkStyle varchar(255),
     --link selections to PerkStyleSelectionDto
     Style int
 );
 
-CREATE TABLE PerkStyleSelection (
+CREATE TABLE league.PerkStyleSelection (
     Id bigint PRIMARY KEY generated always as identity,
     perk int,
     var1 int,
@@ -386,6 +379,15 @@ CREATE TABLE PerkStyleSelection (
     PerksSelectionId bigint references PerksStyle(Id) -- points to perksstyle
 );
 
+
+--everyone who played in the match
+--might be able to link participants too
+CREATE TABLE league.RiotAccountToMatch (
+    Id bigint PRIMARY KEY generated always as identity,
+    RiotAccountId bigint references league.RiotAccount(Id), --TODO foreign key
+    MatchId bigint references league.Match(Id), --TODO foreign
+    ParticipantId bigint references league.participants(Id) --TODO foreign key
+);
 --
 
  --1-1
