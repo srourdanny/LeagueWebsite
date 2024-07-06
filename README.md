@@ -1,6 +1,8 @@
 # League Stats with Friends
+Note: I originallly set this project up to have seperate backend and frontend folders but given its going to be backend heavy with an HTMX frontend it
+was easier to just nestle the public client facing files within the backend folder. At some point we could probably just move everything from the backend folder to the base of the repository.
 
-## Setup the Backend
+## Setup Node
 1. Navigate to the backend: `cd Backend`
 2. Install dependencies from package.json: ```npm install```
 
@@ -24,7 +26,7 @@
     RIOT_API_KEY={YOUR_DEVELOPMENT_RIOT_API_KEY}
     ```
 
-## Run the Backend
+## Run the Server
 1. Navigate to the backend: `cd Backend`
 2. Run the server `npm run start`
 3. Open the webpage: https://localhost:3000/

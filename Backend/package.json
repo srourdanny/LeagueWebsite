@@ -1,7 +1,7 @@
 {
-  "name": "league-stats-with-friends-backend",
+  "name": "league-fantasy-tracker",
   "version": "0.0.0",
-  "description": "A backend for a LeagueStatsWithFriends, a fun side project",
+  "description": "A webserver for a League Fantasy Tracker, a fun side project",
   "main": "app.js",
   "scripts": {
     "build": "npx tsc",

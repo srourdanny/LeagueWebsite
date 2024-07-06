@@ -40,7 +40,7 @@ function getPort(port: string | undefined, defaultPort: number) {
 }
 
 const connection = {
-    application_name: "Node - League Friend Roaster",
+    application_name: "Node - League Fantasy Tracker",
     host: process.env.DBS_HOSTNAME || 'localhost',
     port: getPort(process.env.DBS_PORT, 5432),
     database: process.env.DBS_DB_NAME,
