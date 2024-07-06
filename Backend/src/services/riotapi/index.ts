@@ -15,6 +15,7 @@ async function queueRequest<T>(request : (riotapi: AxiosInstance) => Promise<T>)
    return await request(riotApiClient);
 }
 
+//We can use this object to respect rate limits
 let riotApiWrapper = {
    queueRequest: queueRequest
 };
