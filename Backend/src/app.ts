@@ -2,12 +2,13 @@ import express, { Express, Request, Response } from "express";
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from "./models/swagger_docs";
 import {db,displayDbConnectionParams,testDbConnection} from "./db";
+import searchRoute from "./routes/search";
 
 //TODO: only here for testing. remove later
 import {testAccountService} from './services/riotapi/account_service';
 
 const testDbConnectionOnStartup = true;
-const testAccountServiceOnStartup = true;
+const testAccountServiceOnStartup = false;
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -23,9 +24,10 @@ app.use(express.json({
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get("/", (req: Request, res: Response) => {
-    res.send('<h1>League Stats With Friends</h1><p>Welcome</p><p><a href="/api-docs">API documentation</a></p>')
-});
+//This will serve all of the files in the 'public folder' without us having to explicitly enumerate them all
+app.use(express.static(__dirname + '/public'));
+
+app.use("/search", searchRoute);
 
 //Add more routes here
 

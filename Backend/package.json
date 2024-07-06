@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "server": "node dist/app.js",
-    "start": "tsc && node dist/app.js"
+    "start": "tsc && node dist/app.js",
+    "startw": "tsc && powershell cp -r -Force src/public dist && node dist/app.js"
   },
   "repository": {
     "type": "git",
