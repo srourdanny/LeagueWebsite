@@ -8,6 +8,7 @@ CREATE TABLE league.RiotAccount (
 );
 
 --MetadataDto and InfoDtos
+DROP TABLE IF EXISTS league.match;
 CREATE TABLE league.Match (
     Id bigint PRIMARY KEY generated always as identity,
     MatchId VARCHAR(255),
