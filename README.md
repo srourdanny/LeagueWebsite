@@ -1,4 +1,4 @@
-# League Stats with Friends
+# League Fantasy Tracker
 Note: I originallly set this project up to have seperate backend and frontend folders but given its going to be backend heavy with an HTMX frontend it
 was easier to just nestle the public client facing files within the backend folder. At some point we could probably just move everything from the backend folder to the base of the repository.
 
