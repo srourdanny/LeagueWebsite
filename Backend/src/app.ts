@@ -1,11 +1,14 @@
 import express, { Express, Request, Response } from "express";
 import swaggerUi from 'swagger-ui-express';
-import {swaggerDocument} from "./models/swagger_docs";
-import {db,displayDbConnectionParams,testDbConnection} from "./db";
+import { swaggerDocument } from "./models/swagger_docs";
+import { db, displayDbConnectionParams, testDbConnection } from "./db";
 import searchRoute from "./routes/search";
+import { testMatchService } from "./services/riotapi/match_service";
 
 //TODO: only here for testing. remove later
-import {testAccountService} from './services/riotapi/account_service';
+import { testAccountService } from './services/riotapi/account_service';
+
+
 
 const testDbConnectionOnStartup = true;
 const testAccountServiceOnStartup = false;
@@ -44,3 +47,5 @@ if (testDbConnectionOnStartup) {
 if (testAccountServiceOnStartup) {
     testAccountService(undefined, undefined);
 }
+
+testMatchService(undefined);
