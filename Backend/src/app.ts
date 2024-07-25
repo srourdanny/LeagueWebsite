@@ -11,7 +11,7 @@ import { testAccountService } from './services/riotapi/account_service';
 
 
 const testDbConnectionOnStartup = true;
-const testAccountServiceOnStartup = false;
+const testServicesOnStartup = false;
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -44,8 +44,7 @@ if (testDbConnectionOnStartup) {
     testDbConnection();
 }
 
-if (testAccountServiceOnStartup) {
-    testAccountService(undefined, undefined);
+if (testServicesOnStartup) {
+    testAccountService();
+    testMatchService(undefined);
 }
-
-testMatchService(undefined);

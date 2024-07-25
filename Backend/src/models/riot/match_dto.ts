@@ -19,10 +19,10 @@ export interface InfoDto {
     gameType: string,
     gameVersion: string,
     mapId: number,
-    participants: ParticipantDto,
+    participants: ParticipantDto[],
     platformId: string,
     queueId: number,
-    teams: TeamDto,
+    teams: TeamDto[],
     tournamentCode: string
 }
 

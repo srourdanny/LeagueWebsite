@@ -48,6 +48,7 @@ const connection = {
     password: process.env.DBS_PASSWORD
 }
 export const db = pgp(connection);
+export const pgphelpers = pgp.helpers;
 
 export function displayDbConnectionParams() {
     console.log("Setting up database with the following parameters:");

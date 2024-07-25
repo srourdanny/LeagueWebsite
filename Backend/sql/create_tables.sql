@@ -8,7 +8,7 @@ CREATE TABLE league.RiotAccount (
 );
 
 --MetadataDto and InfoDtos
-DROP TABLE IF EXISTS league.match;
+DROP TABLE IF EXISTS league.Match;
 CREATE TABLE league.Match (
     Id bigint PRIMARY KEY generated always as identity,
     MatchId VARCHAR(255),
@@ -29,8 +29,6 @@ CREATE TABLE league.Match (
     TournamentCode VARCHAR(255)
     --do we need a participants link??
 );
-
-
 
 --participants dto
 CREATE TABLE league.Participants (
@@ -176,7 +174,6 @@ CREATE TABLE league.Participants (
     WardsKilled int,
     WardsPlaced int,
     Win boolean
-
 );
 
 --challengesdto
@@ -339,7 +336,7 @@ CREATE TABLE league.Missions (
     ParticipantsId bigint references participants(Id) 
 );
 
-CREATE TABLE leauge.Teams (
+CREATE TABLE league.Teams (
     Id bigint PRIMARY KEY generated always as identity,
     Teamid int,
     Win boolean,
@@ -349,14 +346,14 @@ CREATE TABLE leauge.Teams (
 
 );
 
-CREATE TABLE leauge.Perks (
+CREATE TABLE league.Perks (
     Id bigint PRIMARY KEY generated always as identity,
     --link stat perks. DONE
     --link styles
     ParticipantId bigint references Participants(Id) -- points to participants
 );
 
-CREATE TABLE leauge.PerksStats (
+CREATE TABLE league.PerksStats (
     Id bigint PRIMARY KEY generated always as identity,
     Defense int,
     Flex int,

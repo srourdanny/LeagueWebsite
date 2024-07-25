@@ -36,19 +36,25 @@ function toRiotAccount(riotAccountRow: any): RiotAccount {
 }
 
 async function getRiotAccountFromDb(gameName: string, tagLine: string): Promise<RiotAccount | null> {
-    return await db.oneOrNone('SELECT * FROM league.RiotAccount WHERE GameName = $1 AND TagLine = $2', [gameName, tagLine], toRiotAccount);
+    return await db.task(ts => 
+        ts.oneOrNone('SELECT * FROM league.RiotAccount WHERE GameName = $1 AND TagLine = $2', [gameName, tagLine], toRiotAccount)
+    );
 }
 
 async function getRiotAccountByPuuidFromDb(puuid: string): Promise<RiotAccount | null> {
-    return await db.oneOrNone('SELECT * FROM league.RiotAccount WHERE Puuid = $1', puuid, toRiotAccount);
+    return await db.task(ts => ts.oneOrNone('SELECT * FROM league.RiotAccount WHERE Puuid = $1', puuid, toRiotAccount));
 }
 
 async function saveRiotAccount(account: AccountDto): Promise<RiotAccount> {
-    return await db.one('INSERT INTO league.RiotAccount (Puuid, GameName, TagLine) VALUES ($/puuid/, $/gameName/, $/tagLine/) RETURNING Id, Puuid, GameName, TagLine', account, toRiotAccount);
+    return await db.task(ts =>
+        ts.one('INSERT INTO league.RiotAccount (Puuid, GameName, TagLine) VALUES ($/puuid/, $/gameName/, $/tagLine/) RETURNING Id, Puuid, GameName, TagLine', account, toRiotAccount)
+    );
 }
 
 async function updateRiotAccount(account: AccountDto): Promise<RiotAccount> {
-    return await db.one('UPDATE league.RiotAccount SET GameName = $/gameName/, TagLine = $/tagLine/ WHERE Puuid = $/puuid/ RETURNING Id, Puuid, GameName, TagLine', account, toRiotAccount);
+    return await db.task(ts =>
+        ts.one('UPDATE league.RiotAccount SET GameName = $/gameName/, TagLine = $/tagLine/ WHERE Puuid = $/puuid/ RETURNING Id, Puuid, GameName, TagLine', account, toRiotAccount)
+    );
 }
 
 export async function getRiotAccount(gameName: string, tagLine: string): Promise<RiotAccount | undefined> {
@@ -67,7 +73,7 @@ export async function getRiotAccount(gameName: string, tagLine: string): Promise
     return await saveRiotAccount(accountDto);
 }
 
-export async function testAccountService(gameName: string | undefined, tagLine: string | undefined) {
+export async function testAccountService(gameName?: string, tagLine?: string) {
     let testGameName = gameName || "Aoishingou";
     let testTagLine = tagLine || "NA1";
     let test = await getRiotAccount(testGameName, testTagLine);
