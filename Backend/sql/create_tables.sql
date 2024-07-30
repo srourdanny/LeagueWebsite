@@ -31,6 +31,7 @@ CREATE TABLE league.Match (
 );
 
 --participants dto
+DROP TABLE IF EXISTS league.Participants;
 CREATE TABLE league.Participants (
     Id bigint PRIMARY KEY generated always as identity,
     AllInPings int,
@@ -177,6 +178,7 @@ CREATE TABLE league.Participants (
 );
 
 --challengesdto
+DROP TABLE IF EXISTS league.Challenges;
 CREATE TABLE league.Challenges (
     Id bigint PRIMARY KEY generated always as identity,
     AssistStreakCount int,
@@ -319,6 +321,7 @@ CREATE TABLE league.Challenges (
 );
 
 --missionsdto
+DROP TABLE IF EXISTS league.Missions;
 CREATE TABLE league.Missions (
     Id bigint PRIMARY KEY generated always as identity,
     PlayerScore0 int,
@@ -335,7 +338,7 @@ CREATE TABLE league.Missions (
     PlayerScore11 int,
     ParticipantsId bigint references participants(Id) 
 );
-
+DROP TABLE IF EXISTS league.Teams;
 CREATE TABLE league.Teams (
     Id bigint PRIMARY KEY generated always as identity,
     Teamid int,
@@ -345,7 +348,7 @@ CREATE TABLE league.Teams (
 
 
 );
-
+DROP TABLE IF EXISTS league.Perks;
 CREATE TABLE league.Perks (
     Id bigint PRIMARY KEY generated always as identity,
     --link stat perks. DONE
@@ -353,6 +356,7 @@ CREATE TABLE league.Perks (
     ParticipantId bigint references Participants(Id) -- points to participants
 );
 
+DROP TABLE IF EXISTS league.PerksStats;
 CREATE TABLE league.PerksStats (
     Id bigint PRIMARY KEY generated always as identity,
     Defense int,
@@ -361,6 +365,7 @@ CREATE TABLE league.PerksStats (
     PerksId bigint references Perks(Id) -- points to Perks
 );
 
+DROP TABLE IF EXISTS league.PerksStyle;
 CREATE TABLE league.PerksStyle (
     Id bigint PRIMARY KEY generated always as identity,
     DescriptionPerkStyle varchar(255),
@@ -368,6 +373,7 @@ CREATE TABLE league.PerksStyle (
     Style int
 );
 
+DROP TABLE IF EXISTS league.PerksSelection;
 CREATE TABLE league.PerkStyleSelection (
     Id bigint PRIMARY KEY generated always as identity,
     perk int,
@@ -380,6 +386,7 @@ CREATE TABLE league.PerkStyleSelection (
 
 --everyone who played in the match
 --might be able to link participants too
+DROP TABLE IF EXISTS league.RiotAccountToMatch;
 CREATE TABLE league.RiotAccountToMatch (
     Id bigint PRIMARY KEY generated always as identity,
     RiotAccountId bigint references league.RiotAccount(Id), --TODO foreign key

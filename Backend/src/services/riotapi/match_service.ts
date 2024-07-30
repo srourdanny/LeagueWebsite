@@ -46,11 +46,11 @@ async function insertMatch(match: MatchDto) {
         tx.none(`INSERT INTO league.Match (MatchId,DataVersion,EndOfGameResult,GameCreation,GameDuration,GameEndTimestamp,GameId,GameMode,
 					GameStartTimeStamp,GameType,GameVersion,MapId,PlatformId,QueueId,TournamenCode)
 					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`, [match.metadata.matchId, match.metadata.dataVersion,
-                        match.info.endOfGameResult, match.info.gameCreation, match.info.gameDuration, match.info.gameEndTimestamp,
-                        match.info.gameId, match.info.gameMode, match.info.gameStartTimestamp, match.info.gameType, match.info.gameVersion,
-                        match.info.mapId, match.info.platformId, match.info.queueId, match.info.tournamentCode
-                    ]);
-        
+        match.info.endOfGameResult, match.info.gameCreation, match.info.gameDuration, match.info.gameEndTimestamp,
+        match.info.gameId, match.info.gameMode, match.info.gameStartTimestamp, match.info.gameType, match.info.gameVersion,
+        match.info.mapId, match.info.platformId, match.info.queueId, match.info.tournamentCode
+        ]);
+
         const participantsColumnSet = new pgphelpers.ColumnSet(["AllInPings", "AssistMePings", "Assists", "BaronKills", "BountyLevel", "ChampExperience", "ChampLevel", "ChampionId",
             "ChampionName", "CommandPings", "ChampionTransform", "ConsumablesPurchased", "DamageDealtToBuildings", "DamageDealtToObjectives", "DamageDealtToTurrets",
             "DamageSelfMitigated", "Deaths", "DetectorWardsPlaced", "DoubleKills", "DragonKills", "EligibleForProgression", "EnemyMissingPings", "EnemyVisionPings",
@@ -62,15 +62,57 @@ async function insertMatch(match: MatchDto) {
             "PlayerScore7", "PlayerScore8", "PlayerScore9", "PlayerScore10", "PlayerScore11", "PentaKills", "PhysicalDamageDealt", "PhysicalDamageDealtToChampions",
             "PhysicalDamageTaken", "Placement", "PlayerAugment1", "PlayerAugment2", "PlayerAugment3", "PlayerAugment4", "PlayerSubteamId", "PushPings", "ProfileIcon", "Puuid",
             "QuadraKills", "RiotIdGameName", "RiotIdName", "RiotIdTagline", "GameRole", "SightWardsBoughtInGame", "Spell1Casts", "Spell2Casts", "Spell3Casts", "Spell4Casts",
-            "SubteamPlacement", "Summoner1Casts","Summoner1Id", "Summoner2Casts", "Summoner2Id", "SummonerId", "SummonerLevel", "SummonerName", "TeamEarlySurrendered", "TeamId",
+            "SubteamPlacement", "Summoner1Casts", "Summoner1Id", "Summoner2Casts", "Summoner2Id", "SummonerId", "SummonerLevel", "SummonerName", "TeamEarlySurrendered", "TeamId",
             "TeamPosition", "TimeCCingOthers", "TimePlayed", "TotalAllyJungleMinionsKilled", "TotalDamageDealt", "TotalDamageDealtToChampions", "TotalDamageShieldedOnTeammates",
             "TotalDamageTaken", "TotalEnemyJungleMinionsKilled", "TotalHeal", "TotalHealsOnTeammates", "TotalMinionsKilled", "TotalTimeCCDealt", "TotalTimeSpentDead",
             "TotalUnitsHealed", "TripleKills", "TrueDamageDealt", "TrueDamageDealtToChampions", "TrueDamageTaken", "TurretKills", "TurretTakedowns", "TurretsLost", "UnrealKills",
             "VisionScore", "VisionClearedPings", "VisionWardsBoughtInGame", "WardsKilled", "WardsPlaced", "Win"],
-            {table: "league.Match"});
+            { table: "league.Match" });
         const insertParticipantsQuery = pgphelpers.insert(match.info.participants, participantsColumnSet);
         tx.none(insertParticipantsQuery);
+
+
+        match.info.participants.forEach(participant => {
+            const challengesColumnSet = new pgphelpers.ColumnSet([
+                "ParticipantId", "AssistStreakCount", "BaronBuffGoldAdvantageOverThreshold", "ControlWardTimeCoverageInRiverOrEnemyHalf",
+                "EarliestBaron", "EarliestDragonTakedown", "EarliestElderDragon", "EarlyLaningPhaseGoldExpAdvantage", "FasterSupportQuestCompletion",
+                "FastestLegendary", "HadAfkTeammate", "HighestChampionDamage", "HighestCrowdControlScore", "HighestWardKills",
+                "JunglerKillsEarlyJungle", "KillsOnLanersEarlyJungleAsJungler", "LaningPhaseGoldExpAdvantage", "LegendaryCount",
+                "MaxCsAdvantageOnLaneOpponent", "MaxLevelLeadLaneOpponent", "MostWardsDestroyedOneSweeper", "MythicItemUsed",
+                "PlayedChampSelectPosition", "SoloTurretsLategame", "TakedownsFirst25Minutes", "TeleportTakedowns",
+                "ThirdInhibitorDestroyedTime", "ThreeWardsOneSweeperCount", "VisionScoreAdvantageLaneOpponent", "InfernalScalePickup",
+                "FistBumpParticipation", "VoidMonsterKill", "AbilityUses", "AcesBefore15Minutes", "AlliedJungleMonsterKills",
+                "BaronTakedowns", "BlastConeOppositeOpponentCount", "BountyGold", "BuffsStolen", "CompleteSupportQuestInTime",
+                "ControlWardsPlaced", "DamagePerMinute", "DamageTakenOnTeamPercentage", "DancedWithRiftHerald", "DeathsByEnemyChamps",
+                "DodgeSkillShotsSmallWindow", "DoubleAces", "DragonTakedowns", "LegendaryItemUsed", "EffectiveHealAndShielding",
+                "ElderDragonKillsWithOpposingSoul", "ElderDragonMultikills", "EnemyChampionImmobilizations", "EnemyJungleMonsterKills",
+                "EpicMonsterKillsNearEnemyJungler", "EpicMonsterKillsWithin30SecondsOfSpawn", "EpicMonsterSteals", "EpicMonsterStolenWithoutSmite",
+                "FirstTurretKilled", "FirstTurretKilledTime", "FlawlessAces", "FullTeamTakedown", "GameLength",
+                "GetTakedownsInAllLanesEarlyJungleAsLaner", "GoldPerMinute", "HadOpenNexus", "ImmobilizeAndKillWithAlly", "InitialBuffCount",
+                "InitialCrabCount", "JungleCsBefore10Minutes", "JunglerTakedownsNearDamagedEpicMonster", "Kda", "KillAfterHiddenWithAlly",
+                "KilledChampTookFullTeamDamageSurvived", "KillingSprees", "KillParticipation", "KillsNearEnemyTurret",
+                "KillsOnOtherLanesEarlyJungleAsLaner", "KillsOnRecentlyHealedByAramPack", "KillsUnderOwnTurret", "KillsWithHelpFromEpicMonster",
+                "KnockEnemyIntoTeamAndKill", "KTurretsDestroyedBeforePlatesFall", "LandSkillShotsEarlyGame", "LaneMinionsFirst10Minutes",
+                "LostAnInhibitor", "MaxKillDeficit", "MejaisFullStackInTime", "MoreEnemyJungleThanOpponent", "MultiKillOneSpell",
+                "Multikills", "MultikillsAfterAggressiveFlash", "MultiTurretRiftHeraldCount", "OuterTurretExecutesBefore10Minutes",
+                "OutnumberedKills", "OutnumberedNexusKill", "PerfectDragonSoulsTaken", "PerfectGame", "PickKillWithAlly", "PoroExplosions",
+                "QuickCleanse", "QuickFirstTurret", "QuickSoloKills", "RiftHeraldTakedowns", "SaveAllyFromDeath", "ScuttleCrabKills",
+                "ShortestTimeToAceFromFirstTakedown", "SkillshotsDodged", "SkillshotsHit", "SnowballsHit", "SoloBaronKills", "SoloKills",
+                "StealthWardsPlaced", "SurvivedSingleDigitHpCount", "SurvivedThreeImmobilizesInFight", "SurvivedThreeEnemyChampsInFight",
+                "TakedownOnFirstTurret", "Takedowns", "TakedownsAfterTakedownsBefore20Mins", "TakedownsBeforeJungleMinionSpawn",
+                "TakedownsFirstXMinutes", "TakedownsInAlcove", "TakedownsInEnemyFountain", "TeamDamagePercentage",
+                "TeamElderDragonKills", "TeamRiftHeraldKills", "ThreeWardsBoughtInGame", "TookLargeDamageSurvived",
+                "TurretPlatesTaken", "TurretsTakenWithRiftHerald", "UnseenRecalls", "VisionScorePerMinute", "WardTakedowns",
+                "WardTakedownsBefore20Mins", "WardsGuarded"
+            ], { table: "league.Challenges" });
+
+            const insertChallengesQuery = pgphelpers.insert(participant.challenges, challengesColumnSet);
+            tx.none(insertChallengesQuery);
+        });
+
+
     });
+
     //save participants
     //save challenges
     //save missions
