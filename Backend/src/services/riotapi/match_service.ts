@@ -51,22 +51,22 @@ async function insertMatch(match: MatchDto) {
         match.info.mapId, match.info.platformId, match.info.queueId, match.info.tournamentCode
         ]);
 
-        const participantsColumnSet = new pgphelpers.ColumnSet(["AllInPings", "AssistMePings", "Assists", "BaronKills", "BountyLevel", "ChampExperience", "ChampLevel", "ChampionId",
-            "ChampionName", "CommandPings", "ChampionTransform", "ConsumablesPurchased", "DamageDealtToBuildings", "DamageDealtToObjectives", "DamageDealtToTurrets",
-            "DamageSelfMitigated", "Deaths", "DetectorWardsPlaced", "DoubleKills", "DragonKills", "EligibleForProgression", "EnemyMissingPings", "EnemyVisionPings",
-            "FirstBloodAssist", "FirstBloodKill", "FirstTowerAssist", "FirstTowerKill", "GameEndedInEarlySurrender", "GameEndedInSurrender", "HoldPings", "GetBackPings",
-            "GoldEarned", "GoldSpent", "IndividualPosition", "InhibitorKills", "InhibitorTakedowns", "InhibitorsLost", "Item0", "Item1", "Item2", "Item3", "Item4", "Item5", "Item6",
-            "ItemsPurchased", "KillingSprees", "Kills", "Lane", "LargestCriticalStrike", "LargestKillingSpree", "LargestMultiKill", "LongestTimeSpentLiving", "MagicDamageDealt",
-            "MagicDamageDealtToChampions", "MagicDamageTaken", "NeutralMinionsKilled", "NeedVisionPings", "NexusKills", "NexusTakedowns", "NexusLost", "ObjectivesStolen",
-            "ObjectivesStolenAssists", "OnMyWayPings", "ParticipantId", "PlayerScore0", "PlayerScore1", "PlayerScore2", "PlayerScore3", "PlayerScore4", "PlayerScore5", "PlayerScore6",
-            "PlayerScore7", "PlayerScore8", "PlayerScore9", "PlayerScore10", "PlayerScore11", "PentaKills", "PhysicalDamageDealt", "PhysicalDamageDealtToChampions",
-            "PhysicalDamageTaken", "Placement", "PlayerAugment1", "PlayerAugment2", "PlayerAugment3", "PlayerAugment4", "PlayerSubteamId", "PushPings", "ProfileIcon", "Puuid",
-            "QuadraKills", "RiotIdGameName", "RiotIdName", "RiotIdTagline", "GameRole", "SightWardsBoughtInGame", "Spell1Casts", "Spell2Casts", "Spell3Casts", "Spell4Casts",
-            "SubteamPlacement", "Summoner1Casts", "Summoner1Id", "Summoner2Casts", "Summoner2Id", "SummonerId", "SummonerLevel", "SummonerName", "TeamEarlySurrendered", "TeamId",
-            "TeamPosition", "TimeCCingOthers", "TimePlayed", "TotalAllyJungleMinionsKilled", "TotalDamageDealt", "TotalDamageDealtToChampions", "TotalDamageShieldedOnTeammates",
-            "TotalDamageTaken", "TotalEnemyJungleMinionsKilled", "TotalHeal", "TotalHealsOnTeammates", "TotalMinionsKilled", "TotalTimeCCDealt", "TotalTimeSpentDead",
-            "TotalUnitsHealed", "TripleKills", "TrueDamageDealt", "TrueDamageDealtToChampions", "TrueDamageTaken", "TurretKills", "TurretTakedowns", "TurretsLost", "UnrealKills",
-            "VisionScore", "VisionClearedPings", "VisionWardsBoughtInGame", "WardsKilled", "WardsPlaced", "Win"],
+        const participantsColumnSet = new pgphelpers.ColumnSet(["allinpings", "assistmepings", "assists", "baronkills", "bountylevel", "champexperience", "champlevel", "championid",
+            "championname", "commandpings", "championtransform", "consumablespurchased", "damagedealttobuildings", "damagedealttoobjectives", "damagedealttoturrets",
+            "damageselfmitigated", "deaths", "detectorwardsplaced", "doublekills", "dragonkills", "eligibleforprogression", "enemymissingpings", "enemyvisionpings",
+            "firstbloodassist", "firstbloodkill", "firsttowerassist", "firsttowerkill", "gameendedinearlysurrender", "gameendedinsurrender", "holdpings", "getbackpings",
+            "goldearned", "goldspent", "individualposition", "inhibitorkills", "inhibitortakedowns", "inhibitorslost", "item0", "item1", "item2", "item3", "item4", "item5", "item6",
+            "itemspurchased", "killingsprees", "kills", "lane", "largestcriticalstrike", "largestkillingspree", "largestmultikill", "longesttimespentliving", "magicdamagedealt",
+            "magicdamagedealttochampions", "magicdamagetaken", "neutralminionskilled", "needvisionpings", "nexuskills", "nexustakedowns", "nexuslost", "objectivesstolen",
+            "objectivesstolenassists", "onmywaypings", "participantid", "playerscore0", "playerscore1", "playerscore2", "playerscore3", "playerscore4", "playerscore5", "playerscore6",
+            "playerscore7", "playerscore8", "playerscore9", "playerscore10", "playerscore11", "pentakills", "physicaldamagedealt", "physicaldamagedealttochampions",
+            "physicaldamagetaken", "placement", "playeraugment1", "playeraugment2", "playeraugment3", "playeraugment4", "playersubteamid", "pushpings", "profileicon", "puuid",
+            "quadrakills", "riotidgamename", "riotidname", "riotidtagline", "gamerole", "sightwardsboughtingame", "spell1casts", "spell2casts", "spell3casts", "spell4casts",
+            "subteamplacement", "summoner1casts", "summoner1id", "summoner2casts", "summoner2id", "summonerid", "summonerlevel", "summonername", "teamearlysurrendered", "teamid",
+            "teamposition", "timeccingothers", "timeplayed", "totalallyjungleminionskilled", "totaldamagedealt", "totaldamagedealttochampions", "totaldamageshieldedonteammates",
+            "totaldamagetaken", "totalenemyjungleminionskilled", "totalheal", "totalhealsonteammates", "totalminionskilled", "totaltimeccdealt", "totaltimespentdead",
+            "totalunitshealed", "triplekills", "truedamagedealt", "truedamagedealttochampions", "truedamagetaken", "turretkills", "turrettakedowns", "turretslost", "unrealkills",
+            "visionscore", "visionclearedpings", "visionwardsboughtingame", "wardskilled", "wardsplaced", "win"],
             { table: "league.Match" });
         const insertParticipantsQuery = pgphelpers.insert(match.info.participants, participantsColumnSet);
         tx.none(insertParticipantsQuery);

@@ -31,8 +31,8 @@ CREATE TABLE league.Match (
 );
 
 --participants dto
-DROP TABLE IF EXISTS league.Participants;
-CREATE TABLE league.Participants (
+DROP TABLE IF EXISTS league.Participant;
+CREATE TABLE league.Participant (
     Id bigint PRIMARY KEY generated always as identity,
     AllInPings int,
     AssistMePings int,
@@ -373,7 +373,7 @@ CREATE TABLE league.PerksStyle (
     Style int
 );
 
-DROP TABLE IF EXISTS league.PerksSelection;
+DROP TABLE IF EXISTS league.PerksStyleSelection;
 CREATE TABLE league.PerkStyleSelection (
     Id bigint PRIMARY KEY generated always as identity,
     perk int,
@@ -381,6 +381,43 @@ CREATE TABLE league.PerkStyleSelection (
     var2 int,
     var3 int,
     PerksSelectionId bigint references PerksStyle(Id) -- points to perksstyle
+);
+
+DROP TABLE IF EXISTS league.TeamDto;
+CREATE TABLE league.TeamDto (
+    Id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    TeamId INT,
+    Win BOOLEAN,
+    MatchId BIGINT REFERENCES league.Match(Id)
+);
+
+DROP TABLE IF EXISTS league.BanDto;
+CREATE TABLE league.BanDto (
+    Id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    ChampionId INT,
+    PickTurn INT,
+    TeamDtoId BIGINT REFERENCES league.TeamDto(Id)
+);
+
+
+DROP TABLE IF EXISTS league.ObjectivesDto;
+CREATE TABLE league.ObjectivesDto (
+    Id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    BaronId BIGINT REFERENCES league.ObjectiveDto(Id),
+    ChampionId BIGINT REFERENCES league.ObjectiveDto(Id),
+    DragonId BIGINT REFERENCES league.ObjectiveDto(Id),
+    HordeId BIGINT REFERENCES league.ObjectiveDto(Id),
+    InhibitorId BIGINT REFERENCES league.ObjectiveDto(Id),
+    RiftHeraldId BIGINT REFERENCES league.ObjectiveDto(Id),
+    TowerId BIGINT REFERENCES league.ObjectiveDto(Id),
+    TeamDtoId BIGINT REFERENCES league.TeamDto(Id)
+);
+
+DROP TABLE IF EXISTS league.ObjectiveDto;
+CREATE TABLE league.ObjectiveDto (
+    Id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    First BOOLEAN,
+    Kills INT
 );
 
 

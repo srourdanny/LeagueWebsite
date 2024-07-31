@@ -1,32 +1,24 @@
-export interface MatchDto {
-    metadata: MetadataDto,
-    info: InfoDto
-}
-export interface MetadataDto {
-    dataVersion: string,
+export default interface Match {
+    id: number,
     matchId: string,
-    participant: string[]
-}
-export interface InfoDto {
+    dataVersion: string,
     endOfGameResult: string,
     gameCreation: number,
     gameDuration: number,
     gameEndTimestamp: number,
     gameId: number,
     gameMode: string,
-    gameName: string,
     gameStartTimestamp: number,
     gameType: string,
     gameVersion: string,
     mapId: number,
-    participant: ParticipantDto[],
     platformId: string,
     queueId: number,
-    teams: TeamDto[],
     tournamentCode: string
 }
 
-export interface ParticipantDto {
+export default interface Participant {
+    id: number,
     allInPings: number,
     assistMePings: number,
     assists: number,
@@ -39,7 +31,6 @@ export interface ParticipantDto {
     commandPings: number,
     championTransform: number,
     consumablesPurchased: number,
-    challenges: ChallengesDto,
     damageDealtToBuildings: number,
     damageDealtToObjectives: number,
     damageDealtToTurrets: number,
@@ -83,7 +74,6 @@ export interface ParticipantDto {
     magicDamageDealt: number,
     magicDamageDealtToChampions: number,
     magicDamageTaken: number,
-    missions: MissionsDto,
     neutralMinionsKilled: number,
     needVisionPings: number,
     nexusKills: number,
@@ -106,7 +96,6 @@ export interface ParticipantDto {
     playerScore10: number,
     playerScore11: number,
     pentaKills: number,
-    perks: PerksDto,
     physicalDamageDealt: number,
     physicalDamageDealtToChampions: number,
     physicalDamageTaken: number,
@@ -123,7 +112,7 @@ export interface ParticipantDto {
     riotIdGameName: string,
     riotIdName: string,
     riotIdTagline: string,
-    role: string,
+    gameRole: string,
     sightWardsBoughtInGame: number,
     spell1Casts: number,
     spell2Casts: number,
@@ -170,7 +159,8 @@ export interface ParticipantDto {
     win: boolean
 }
 
-export interface ChallengesDto {
+export default interface Challenges {
+    id: number,
     assistStreakCount: number,
     baronBuffGoldAdvantageOverThreshold: number,
     controlWardTimeCoverageInRiverOrEnemyHalf: number,
@@ -199,7 +189,7 @@ export interface ChallengesDto {
     thirdInhibitorDestroyedTime: number,
     threeWardsOneSweeperCount: number,
     visionScoreAdvantageLaneOpponent: number,
-    InfernalScalePickup: number,
+    infernalScalePickup: number,
     fistBumpParticipation: number,
     voidMonsterKill: number,
     abilityUses: number,
@@ -218,7 +208,6 @@ export interface ChallengesDto {
     dodgeSkillShotsSmallWindow: number,
     doubleAces: number,
     dragonTakedowns: number,
-    legendaryItemUsed: number[],
     effectiveHealAndShielding: number,
     elderDragonKillsWithOpposingSoul: number,
     elderDragonMultikills: number,
@@ -306,10 +295,12 @@ export interface ChallengesDto {
     visionScorePerMinute: number,
     wardsGuarded: number,
     wardTakedowns: number,
-    wardTakedownsBefore20M: number
+    wardTakedownsBefore20M: number,
+    participantId: number
 }
 
-export interface MissionsDto {
+export default interface Missions {
+    id: number,
     playerScore0: number,
     playerScore1: number,
     playerScore2: number,
@@ -321,57 +312,82 @@ export interface MissionsDto {
     playerScore8: number,
     playerScore9: number,
     playerScore10: number,
-    playerScore11: number
+    playerScore11: number,
+    participantsId: number
 }
 
-export interface PerksDto {
-    statPerks: PerkStatsDto,
-    styles: PerkStyleDto[]
+export default interface Teams {
+    id: number,
+    teamid: number,
+    win: boolean,
+    matchId: number
 }
 
-export interface PerkStatsDto {
+export default interface Perks {
+    id: number,
+    participantId: number
+}
+
+export default interface PerksStats {
+    id: number,
     defense: number,
     flex: number,
-    offense: number
+    offense: number,
+    perksId: number
 }
 
-export interface PerkStyleDto {
-    description: string,
-    selections: PerkStyleSelectionDto[],
+export default interface PerksStyle {
+    id: number,
+    descriptionPerkStyle: string,
     style: number
 }
 
-export interface PerkStyleSelectionDto {
+export default interface PerksStyleSelection {
+    id: number,
     perk: number,
     var1: number,
     var2: number,
-    var3: number
+    var3: number,
+    perksSelectionId: number
 }
 
-export interface TeamDto {
-    bans: BanDto[],
-    objectives: ObjectivesDto,
+export default interface TeamDto {
+    id: number,
     teamId: number,
-    win: boolean
+    win: boolean,
+    matchId: string
 }
 
-export interface BanDto {
+// BanDto interface
+export default interface BanDto {
+    id: number,
     championId: number,
-    pickTurn: number
+    pickTurn: number,
+    teamDtoId: number
 }
 
-export interface ObjectivesDto {
-    baron: ObjectiveDto,
-    champion: ObjectiveDto,
-    dragon: ObjectiveDto,
-    horde: ObjectiveDto,
-    inhibitor: ObjectiveDto,
-    riftHerald: ObjectiveDto,
-    tower: ObjectiveDto
+// ObjectivesDto interface
+export default interface ObjectivesDto {
+    id: number,
+    baronId: number,
+    championId: number,
+    dragonId: number,
+    hordeId: number,
+    inhibitorId: number,
+    riftHeraldId: number,
+    towerId: number,
+    teamDtoId: number
 }
 
-export interface ObjectiveDto {
+export default interface ObjectiveDto {
+    id: number,
     first: boolean,
     kills: number
 }
 
+export default interface RiotAccountToMatch {
+    id: number,
+    riotAccountId: number,
+    matchId: string,
+    participantId: number
+}
