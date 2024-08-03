@@ -1,4 +1,4 @@
-import { MatchDto } from '../../models/riot/match_dto';
+import { ChallengesDto, MatchDto } from '../../models/riot/match_dto';
 import riotapiWrapper from '../riotapi';
 import { db, pgphelpers } from '../../db';
 import { start } from 'repl';
@@ -51,7 +51,7 @@ async function insertMatch(match: MatchDto) {
         match.info.mapId, match.info.platformId, match.info.queueId, match.info.tournamentCode
         ]);
 
-        const participantsColumnSet = new pgphelpers.ColumnSet(["allinpings", "assistmepings", "assists", "baronkills", "bountylevel", "champexperience", "champlevel", "championid",
+        const participantColumnSet = new pgphelpers.ColumnSet(["allinpings", "assistmepings", "assists", "baronkills", "bountylevel", "champexperience", "champlevel", "championid",
             "championname", "commandpings", "championtransform", "consumablespurchased", "damagedealttobuildings", "damagedealttoobjectives", "damagedealttoturrets",
             "damageselfmitigated", "deaths", "detectorwardsplaced", "doublekills", "dragonkills", "eligibleforprogression", "enemymissingpings", "enemyvisionpings",
             "firstbloodassist", "firstbloodkill", "firsttowerassist", "firsttowerkill", "gameendedinearlysurrender", "gameendedinsurrender", "holdpings", "getbackpings",
@@ -68,50 +68,51 @@ async function insertMatch(match: MatchDto) {
             "totalunitshealed", "triplekills", "truedamagedealt", "truedamagedealttochampions", "truedamagetaken", "turretkills", "turrettakedowns", "turretslost", "unrealkills",
             "visionscore", "visionclearedpings", "visionwardsboughtingame", "wardskilled", "wardsplaced", "win"],
             { table: "league.Match" });
-        const insertParticipantsQuery = pgphelpers.insert(match.info.participants, participantsColumnSet);
-        tx.none(insertParticipantsQuery);
+        const insertParticipantQuery = pgphelpers.insert(match.info.participant, participantColumnSet);
+        tx.none(insertParticipantQuery);
 
 
-        match.info.participants.forEach(participant => {
-            const challengesColumnSet = new pgphelpers.ColumnSet([
-                "ParticipantId", "AssistStreakCount", "BaronBuffGoldAdvantageOverThreshold", "ControlWardTimeCoverageInRiverOrEnemyHalf",
-                "EarliestBaron", "EarliestDragonTakedown", "EarliestElderDragon", "EarlyLaningPhaseGoldExpAdvantage", "FasterSupportQuestCompletion",
-                "FastestLegendary", "HadAfkTeammate", "HighestChampionDamage", "HighestCrowdControlScore", "HighestWardKills",
-                "JunglerKillsEarlyJungle", "KillsOnLanersEarlyJungleAsJungler", "LaningPhaseGoldExpAdvantage", "LegendaryCount",
-                "MaxCsAdvantageOnLaneOpponent", "MaxLevelLeadLaneOpponent", "MostWardsDestroyedOneSweeper", "MythicItemUsed",
-                "PlayedChampSelectPosition", "SoloTurretsLategame", "TakedownsFirst25Minutes", "TeleportTakedowns",
-                "ThirdInhibitorDestroyedTime", "ThreeWardsOneSweeperCount", "VisionScoreAdvantageLaneOpponent", "InfernalScalePickup",
-                "FistBumpParticipation", "VoidMonsterKill", "AbilityUses", "AcesBefore15Minutes", "AlliedJungleMonsterKills",
-                "BaronTakedowns", "BlastConeOppositeOpponentCount", "BountyGold", "BuffsStolen", "CompleteSupportQuestInTime",
-                "ControlWardsPlaced", "DamagePerMinute", "DamageTakenOnTeamPercentage", "DancedWithRiftHerald", "DeathsByEnemyChamps",
-                "DodgeSkillShotsSmallWindow", "DoubleAces", "DragonTakedowns", "LegendaryItemUsed", "EffectiveHealAndShielding",
-                "ElderDragonKillsWithOpposingSoul", "ElderDragonMultikills", "EnemyChampionImmobilizations", "EnemyJungleMonsterKills",
-                "EpicMonsterKillsNearEnemyJungler", "EpicMonsterKillsWithin30SecondsOfSpawn", "EpicMonsterSteals", "EpicMonsterStolenWithoutSmite",
-                "FirstTurretKilled", "FirstTurretKilledTime", "FlawlessAces", "FullTeamTakedown", "GameLength",
-                "GetTakedownsInAllLanesEarlyJungleAsLaner", "GoldPerMinute", "HadOpenNexus", "ImmobilizeAndKillWithAlly", "InitialBuffCount",
-                "InitialCrabCount", "JungleCsBefore10Minutes", "JunglerTakedownsNearDamagedEpicMonster", "Kda", "KillAfterHiddenWithAlly",
-                "KilledChampTookFullTeamDamageSurvived", "KillingSprees", "KillParticipation", "KillsNearEnemyTurret",
-                "KillsOnOtherLanesEarlyJungleAsLaner", "KillsOnRecentlyHealedByAramPack", "KillsUnderOwnTurret", "KillsWithHelpFromEpicMonster",
-                "KnockEnemyIntoTeamAndKill", "KTurretsDestroyedBeforePlatesFall", "LandSkillShotsEarlyGame", "LaneMinionsFirst10Minutes",
-                "LostAnInhibitor", "MaxKillDeficit", "MejaisFullStackInTime", "MoreEnemyJungleThanOpponent", "MultiKillOneSpell",
-                "Multikills", "MultikillsAfterAggressiveFlash", "MultiTurretRiftHeraldCount", "OuterTurretExecutesBefore10Minutes",
-                "OutnumberedKills", "OutnumberedNexusKill", "PerfectDragonSoulsTaken", "PerfectGame", "PickKillWithAlly", "PoroExplosions",
-                "QuickCleanse", "QuickFirstTurret", "QuickSoloKills", "RiftHeraldTakedowns", "SaveAllyFromDeath", "ScuttleCrabKills",
-                "ShortestTimeToAceFromFirstTakedown", "SkillshotsDodged", "SkillshotsHit", "SnowballsHit", "SoloBaronKills", "SoloKills",
-                "StealthWardsPlaced", "SurvivedSingleDigitHpCount", "SurvivedThreeImmobilizesInFight", "SurvivedThreeEnemyChampsInFight",
-                "TakedownOnFirstTurret", "Takedowns", "TakedownsAfterTakedownsBefore20Mins", "TakedownsBeforeJungleMinionSpawn",
-                "TakedownsFirstXMinutes", "TakedownsInAlcove", "TakedownsInEnemyFountain", "TeamDamagePercentage",
-                "TeamElderDragonKills", "TeamRiftHeraldKills", "ThreeWardsBoughtInGame", "TookLargeDamageSurvived",
-                "TurretPlatesTaken", "TurretsTakenWithRiftHerald", "UnseenRecalls", "VisionScorePerMinute", "WardTakedowns",
-                "WardTakedownsBefore20Mins", "WardsGuarded"
-            ], { table: "league.Challenges" });
+        const challengesColumnSet = new pgphelpers.ColumnSet([
+            "ParticipantId", "AssistStreakCount", "BaronBuffGoldAdvantageOverThreshold", "ControlWardTimeCoverageInRiverOrEnemyHalf",
+            "EarliestBaron", "EarliestDragonTakedown", "EarliestElderDragon", "EarlyLaningPhaseGoldExpAdvantage", "FasterSupportQuestCompletion",
+            "FastestLegendary", "HadAfkTeammate", "HighestChampionDamage", "HighestCrowdControlScore", "HighestWardKills",
+            "JunglerKillsEarlyJungle", "KillsOnLanersEarlyJungleAsJungler", "LaningPhaseGoldExpAdvantage", "LegendaryCount",
+            "MaxCsAdvantageOnLaneOpponent", "MaxLevelLeadLaneOpponent", "MostWardsDestroyedOneSweeper", "MythicItemUsed",
+            "PlayedChampSelectPosition", "SoloTurretsLategame", "TakedownsFirst25Minutes", "TeleportTakedowns",
+            "ThirdInhibitorDestroyedTime", "ThreeWardsOneSweeperCount", "VisionScoreAdvantageLaneOpponent", "InfernalScalePickup",
+            "FistBumpParticipation", "VoidMonsterKill", "AbilityUses", "AcesBefore15Minutes", "AlliedJungleMonsterKills",
+            "BaronTakedowns", "BlastConeOppositeOpponentCount", "BountyGold", "BuffsStolen", "CompleteSupportQuestInTime",
+            "ControlWardsPlaced", "DamagePerMinute", "DamageTakenOnTeamPercentage", "DancedWithRiftHerald", "DeathsByEnemyChamps",
+            "DodgeSkillShotsSmallWindow", "DoubleAces", "DragonTakedowns", "LegendaryItemUsed", "EffectiveHealAndShielding",
+            "ElderDragonKillsWithOpposingSoul", "ElderDragonMultikills", "EnemyChampionImmobilizations", "EnemyJungleMonsterKills",
+            "EpicMonsterKillsNearEnemyJungler", "EpicMonsterKillsWithin30SecondsOfSpawn", "EpicMonsterSteals", "EpicMonsterStolenWithoutSmite",
+            "FirstTurretKilled", "FirstTurretKilledTime", "FlawlessAces", "FullTeamTakedown", "GameLength",
+            "GetTakedownsInAllLanesEarlyJungleAsLaner", "GoldPerMinute", "HadOpenNexus", "ImmobilizeAndKillWithAlly", "InitialBuffCount",
+            "InitialCrabCount", "JungleCsBefore10Minutes", "JunglerTakedownsNearDamagedEpicMonster", "Kda", "KillAfterHiddenWithAlly",
+            "KilledChampTookFullTeamDamageSurvived", "KillingSprees", "KillParticipation", "KillsNearEnemyTurret",
+            "KillsOnOtherLanesEarlyJungleAsLaner", "KillsOnRecentlyHealedByAramPack", "KillsUnderOwnTurret", "KillsWithHelpFromEpicMonster",
+            "KnockEnemyIntoTeamAndKill", "KTurretsDestroyedBeforePlatesFall", "LandSkillShotsEarlyGame", "LaneMinionsFirst10Minutes",
+            "LostAnInhibitor", "MaxKillDeficit", "MejaisFullStackInTime", "MoreEnemyJungleThanOpponent", "MultiKillOneSpell",
+            "Multikills", "MultikillsAfterAggressiveFlash", "MultiTurretRiftHeraldCount", "OuterTurretExecutesBefore10Minutes",
+            "OutnumberedKills", "OutnumberedNexusKill", "PerfectDragonSoulsTaken", "PerfectGame", "PickKillWithAlly", "PoroExplosions",
+            "QuickCleanse", "QuickFirstTurret", "QuickSoloKills", "RiftHeraldTakedowns", "SaveAllyFromDeath", "ScuttleCrabKills",
+            "ShortestTimeToAceFromFirstTakedown", "SkillshotsDodged", "SkillshotsHit", "SnowballsHit", "SoloBaronKills", "SoloKills",
+            "StealthWardsPlaced", "SurvivedSingleDigitHpCount", "SurvivedThreeImmobilizesInFight", "SurvivedThreeEnemyChampsInFight",
+            "TakedownOnFirstTurret", "Takedowns", "TakedownsAfterTakedownsBefore20Mins", "TakedownsBeforeJungleMinionSpawn",
+            "TakedownsFirstXMinutes", "TakedownsInAlcove", "TakedownsInEnemyFountain", "TeamDamagePercentage",
+            "TeamElderDragonKills", "TeamRiftHeraldKills", "ThreeWardsBoughtInGame", "TookLargeDamageSurvived",
+            "TurretPlatesTaken", "TurretsTakenWithRiftHerald", "UnseenRecalls", "VisionScorePerMinute", "WardTakedowns",
+            "WardTakedownsBefore20Mins", "WardsGuarded"
+        ], { table: "league.Challenges" });
 
-            const insertChallengesQuery = pgphelpers.insert(participant.challenges, challengesColumnSet);
-            tx.none(insertChallengesQuery);
-        });
+        const challengesMap = match.info.participant.map(p => p.challenges);
 
-
+        const insertChallengesQuery = pgphelpers.insert(challengesMap, challengesColumnSet);
+        tx.none(insertChallengesQuery);
     });
+
+
+});
 
     //save participants
     //save challenges
